@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Creavo AI — Video Ad Studio</title>
+<meta name="description" content="Turn any product into a scroll-stopping video ad in minutes."/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23f97316'/><text x='16' y='23' text-anchor='middle' font-size='20' font-weight='900' fill='white' font-family='sans-serif'>C</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+
+<!-- ══════════════════════════════════════════════
+     FILL THESE IN BEFORE DEPLOYING
+     ══════════════════════════════════════════════ -->
+<script>
+window.CREAVO = {
+  BACKEND_URL: "https://eloquent-nourishment-production-a698.up.railway.app",
+  STRIPE_KEY:  "pk_live_51TcF4tDWR54Of3UOJgJO8t5ueNDEayXNKmfpCmyG8aKOyVxfKaxXVK3dnz3ciYi4mx7umHAXDHA3V9gotVL6j06Q00x0NOnXp4"
+};
+</script>
+<!-- ══════════════════════════════════════════════ -->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14;--s1:#0b1120;--s2:#0f172a;--s3:#162035;--s4:#1e2d47;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.11);--b3:rgba(255,255,255,.18);
+  --tx:#e8edf5;--mu:#6b7a96;--mu2:#8a97ae;
+  --bl:#1a56db;--bl2:#2563eb;--bl3:#3b82f6;--bld:rgba(26,86,219,.18);
+  --or:#f97316;--or2:#fb923c;--ord:rgba(249,115,22,.16);
+  --gr:#10b981;--grd:rgba(16,185,129,.14);
+  --rd:#ef4444;--r:12px;
+  --f:'Inter',sans-serif;--d:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.65}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,11,20,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);height:62px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--d);font-size:1.3rem;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:.55rem;cursor:pointer}
+.lm{width:30px;height:30px;border-radius:8px;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:900;color:#fff}
+.logo span{color:var(--or)}
+.nlinks{display:flex;align-items:center;gap:1.6rem}
+.nlinks a{color:var(--mu2);font-size:.84rem;font-weight:500;text-decoration:none;cursor:pointer;transition:color .15s}
+.nlinks a:hover{color:var(--tx)}
+.ncta{background:var(--or);color:#fff;padding:.4rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;font-family:var(--f);transition:background .15s}
+.ncta:hover{background:var(--or2)}
+
+/* PAGES */
+.pg{display:none;padding-top:62px;min-height:100vh}.pg.on{display:block}
+
+/* HERO */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:5.5rem 1.5rem 4rem;position:relative;overflow:hidden}
+.orb{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:700px;height:400px;border-radius:50%;background:radial-gradient(ellipse,rgba(26,86,219,.13) 0%,rgba(249,115,22,.07) 50%,transparent 75%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.28);color:var(--or2);font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.32rem .85rem;border-radius:100px;margin-bottom:1.75rem}
+h1.hero-h{font-family:var(--d);font-size:clamp(2.2rem,5.5vw,3.9rem);font-weight:800;line-height:1.09;letter-spacing:-.035em;max-width:780px;margin-bottom:1.3rem}
+.hi{color:var(--or)}.hb{color:var(--bl3)}
+.hero-sub{color:var(--mu2);font-size:.98rem;max-width:520px;margin-bottom:2.4rem;line-height:1.75}
+.hbtns{display:flex;gap:.85rem;flex-wrap:wrap;justify-content:center}
+
+/* BUTTONS */
+.bo{background:var(--or);color:#fff;border:none;padding:.78rem 1.8rem;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;font-family:var(--f);transition:background .15s,transform .12s}
+.bo:hover{background:var(--or2);transform:translateY(-1px)}
+.bo:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.bg{background:transparent;color:var(--tx);border:1px solid var(--b3);padding:.78rem 1.8rem;border-radius:10px;font-weight:600;font-size:.9rem;cursor:pointer;font-family:var(--f);transition:border-color .15s,background .15s}
+.bg:hover{border-color:var(--bl3);background:var(--bld)}
+.bbl{background:var(--bl2);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-family:var(--f);transition:background .15s}
+.bbl:hover{background:var(--bl3)}
+
+/* FEATURES */
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;max-width:1060px;margin:3rem auto 0;padding:0 1.5rem}
+.fc{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.6rem;transition:border-color .2s,background .2s}
+.fc:hover{border-color:rgba(249,115,22,.25);background:var(--s2)}
+.fi{width:40px;height:40px;border-radius:9px;background:var(--ord);border:1px solid rgba(249,115,22,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.9rem}
+.fc h3{font-size:.93rem;font-weight:700;margin-bottom:.4rem}
+.fc p{color:var(--mu2);font-size:.83rem;line-height:1.65}
+
+/* SECTION HEADER */
+.sh{text-align:center;padding:5rem 1.5rem 0;max-width:600px;margin:0 auto}
+.sh h2{font-family:var(--d);font-size:clamp(1.7rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.025em;margin-bottom:.7rem}
+.sh p{color:var(--mu2);font-size:.92rem}
+.ey{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--or);margin-bottom:.6rem;display:block}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:920px;margin:2.5rem auto 0;padding:0 1.5rem 5rem}
+.step{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.6rem}
+.sbar{height:2px;background:var(--b1);border-radius:1px;margin-bottom:.9rem;overflow:hidden}
+.sf{height:100%;border-radius:1px}
+.sbo{background:var(--or)}.sbb{background:var(--bl2)}
+.sn{font-family:var(--d);font-size:2.4rem;font-weight:800;color:rgba(26,86,219,.2);line-height:1;margin-bottom:.65rem}
+.step h3{font-size:.9rem;font-weight:700;margin-bottom:.35rem}
+.step p{color:var(--mu2);font-size:.81rem;line-height:1.6}
+
+/* PRICING */
+.pg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem;max-width:740px;margin:2.5rem auto 0;padding:0 1.5rem 5rem}
+.plan{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:1.85rem;position:relative}
+.plan.hot{border-color:var(--or);background:linear-gradient(160deg,rgba(249,115,22,.07) 0%,var(--s1) 55%)}
+.ptag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--or);color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.28rem .85rem;border-radius:100px}
+.ptier{font-size:.72rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.55rem}
+.pprice{font-family:var(--d);font-size:3rem;font-weight:800;line-height:1;letter-spacing:-.035em;margin-bottom:.25rem}
+.pprice sup{font-size:1.1rem;vertical-align:super}
+.pprice.or{color:var(--or)}.pprice.bl{color:var(--bl3)}
+.pcycle{color:var(--mu);font-size:.82rem;margin-bottom:1.4rem}
+.pf{list-style:none;margin-bottom:1.75rem}
+.pf li{display:flex;align-items:flex-start;gap:.55rem;padding:.42rem 0;font-size:.85rem;border-bottom:1px solid var(--b1)}
+.pf li:last-child{border-bottom:none}
+.cko{color:var(--or);font-weight:800;flex-shrink:0}.ckb{color:var(--bl3);font-weight:800;flex-shrink:0}
+.pbtn{width:100%;border:none;border-radius:10px;padding:.85rem;font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--f);transition:opacity .15s,transform .12s}
+.pbtn:hover{opacity:.88;transform:translateY(-1px)}
+.pbtn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pbtn.or{background:var(--or);color:#fff}.pbtn.bl{background:var(--bl2);color:#fff}
+
+/* SUCCESS */
+.succ{display:flex;flex-direction:column;align-items:center;text-align:center;padding:7rem 1.5rem;max-width:520px;margin:0 auto}
+.sring{width:72px;height:72px;border-radius:50%;background:var(--grd);border:2px solid rgba(16,185,129,.3);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 1.5rem}
+.succ h2{font-family:var(--d);font-size:2rem;font-weight:800;margin-bottom:.75rem}
+.succ p{color:var(--mu2);margin-bottom:.5rem;line-height:1.7}
+.succ .det{font-size:.82rem;color:var(--mu);margin-bottom:2rem}
+
+/* STUDIO */
+.sw{max-width:820px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.stop{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.6rem;flex-wrap:wrap;gap:.75rem}
+.stop h2{font-family:var(--d);font-size:1.55rem;font-weight:800;letter-spacing:-.025em}
+.qpill{background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:.38rem .85rem;font-size:.77rem;color:var(--mu2);display:flex;align-items:center;gap:.45rem}
+.qdot{width:7px;height:7px;border-radius:50%;background:var(--gr);display:inline-block;flex-shrink:0}
+.qdot.w{background:var(--or)}.qdot.e{background:var(--rd)}
+.nosub{background:var(--s2);border:1px solid rgba(249,115,22,.3);border-radius:var(--r);padding:1.5rem;text-align:center;margin-bottom:1.5rem;display:none}
+.nosub h3{font-weight:700;margin-bottom:.4rem;font-size:.95rem}
+.nosub p{color:var(--mu2);font-size:.83rem;margin-bottom:1rem}
+
+.upzone{border:2px dashed rgba(26,86,219,.35);border-radius:var(--r);padding:2.8rem 1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:rgba(26,86,219,.03);margin-bottom:1.2rem}
+.upzone:hover,.upzone.drag{border-color:var(--bl3);background:rgba(26,86,219,.08)}
+.upzone .upi{font-size:2rem;margin-bottom:.65rem}
+.upzone h3{font-size:.92rem;font-weight:700;margin-bottom:.35rem}
+.upzone p{color:var(--mu2);font-size:.8rem}
+.upchosen{margin-top:.65rem;font-size:.78rem;color:var(--or2);display:none}
+input[type=file]{display:none}
+
+.orline{display:flex;align-items:center;gap:.85rem;margin:1.1rem 0;color:var(--mu);font-size:.78rem}
+.orline::before,.orline::after{content:'';flex:1;height:1px;background:var(--b1)}
+.urow{display:flex;gap:.7rem;margin-bottom:1.4rem}
+.uinp{flex:1;background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:.7rem 1rem;color:var(--tx);font-family:var(--f);font-size:.88rem;outline:none;transition:border-color .15s}
+.uinp:focus{border-color:var(--bl3)}.uinp::placeholder{color:var(--mu)}
+
+.sl{font-size:.7rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.55rem;display:block}
+.ptiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.35rem}
+.ptile{background:var(--s1);border:1.5px solid var(--b1);border-radius:11px;padding:.95rem .7rem;text-align:center;cursor:pointer;transition:all .18s;user-select:none}
+.ptile:hover{border-color:var(--b3);background:var(--s2)}.ptile.sel{border-color:var(--or);background:rgba(249,115,22,.08)}
+.ptico{font-size:1.6rem;margin-bottom:.35rem}.ptnm{font-size:.76rem;font-weight:700}.ptds{font-size:.68rem;color:var(--mu);margin-top:.18rem}
+
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-bottom:1.35rem}
+@media(max-width:540px){.ogrid{grid-template-columns:1fr}.frow{grid-template-columns:1fr}}
+.osel{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:.68rem .95rem;color:var(--tx);font-family:var(--f);font-size:.87rem;outline:none;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' fill='%236b7a96' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L2 5h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2rem}
+.osel:focus{border-color:var(--bl3)}
+
+.advtog{display:flex;align-items:center;justify-content:space-between;background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:.75rem 1rem;margin-bottom:1.2rem;cursor:pointer;transition:background .15s}
+.advtog:hover{background:var(--s2)}.advtog span{font-size:.83rem;font-weight:700}.advtog small{color:var(--mu);font-size:.75rem}
+.advp{background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:.95rem 1.1rem;margin-bottom:1.35rem;display:none}
+.advp.open{display:block}
+.advi{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-top:.65rem}
+@media(max-width:460px){.advi{grid-template-columns:1fr}}
+
+.gbtn{width:100%;border:none;border-radius:12px;padding:.95rem;font-size:.95rem;font-weight:800;cursor:pointer;font-family:var(--f);background:var(--or);color:#fff;letter-spacing:.01em;transition:background .15s,transform .12s;display:flex;align-items:center;justify-content:center;gap:.45rem}
+.gbtn:hover{background:var(--or2);transform:translateY(-1px)}.gbtn:disabled{opacity:.42;cursor:not-allowed;transform:none}
+
+.pw{display:none;margin-top:1.1rem}
+.pm{display:flex;justify-content:space-between;font-size:.77rem;color:var(--mu2);margin-bottom:.3rem}
+.pt{height:3px;background:var(--s4);border-radius:99px;overflow:hidden}
+.pf2{height:100%;background:var(--or);border-radius:99px;transition:width .45s ease}
+
+.qs{margin-top:2.2rem}
+.qs h3{font-size:.72rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.85rem}
+.qi{background:var(--s1);border:1px solid var(--b1);border-radius:11px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.9rem;margin-bottom:.7rem}
+.qth{width:48px;height:34px;border-radius:6px;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:1px solid var(--b1)}
+.qin{flex:1;min-width:0}
+.qnm{font-size:.84rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qmt{font-size:.72rem;color:var(--mu);margin-top:.12rem}
+.qst{font-size:.68rem;font-weight:800;padding:.22rem .6rem;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0}
+.sd{background:rgba(16,185,129,.12);color:var(--gr)}.sp{background:rgba(249,115,22,.12);color:var(--or2)}.sf2{background:rgba(239,68,68,.12);color:var(--rd)}
+.qdl{background:transparent;border:1px solid var(--b2);color:var(--tx);padding:.28rem .65rem;border-radius:7px;font-size:.72rem;font-weight:700;cursor:pointer;font-family:var(--f);transition:background .15s;flex-shrink:0;text-decoration:none;display:inline-block}
+.qdl:hover{background:var(--s3)}
+
+/* ACCOUNT */
+.aw{max-width:600px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.ac{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:1.4rem;margin-bottom:.9rem}
+.ac h3{font-size:.7rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.09em;margin-bottom:.9rem}
+.ar{display:flex;align-items:center;justify-content:space-between;padding:.52rem 0;border-bottom:1px solid var(--b1)}
+.ar:last-child{border-bottom:none}.ar .lb{font-size:.84rem;color:var(--mu2)}.ar .vl{font-size:.84rem;font-weight:700}
+.ar .vl.on{color:var(--gr)}.ar .vl.or{color:var(--or)}
+
+/* TOAST */
+#toast{position:fixed;bottom:1.75rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--s3);border:1px solid var(--b3);color:var(--tx);padding:.7rem 1.2rem;border-radius:10px;font-size:.84rem;font-weight:500;z-index:9999;transition:transform .28s ease;white-space:nowrap}
+#toast.on{transform:translateX(-50%) translateY(0)}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:rgba(7,11,20,.88);z-index:500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:1rem}
+#loader.on{display:flex}
+.spin{width:36px;height:36px;border:3px solid var(--s4);border-top-color:var(--or);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loader p{color:var(--mu2);font-size:.88rem}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="logo" onclick="go('home')"><div class="lm">C</div><div>Creavo <span>AI</span></div></div>
+  <div class="nlinks">
+    <a onclick="go('home')">Home</a>
+    <a onclick="go('pricing')">Pricing</a>
+    <a onclick="go('studio')">Studio</a>
+    <a onclick="go('account')">Account</a>
+    <button class="ncta" onclick="go('pricing')">Get started</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="hero">
+    <div class="orb"></div>
+    <div class="badge">✦ AI-Powered Video Advertising</div>
+    <h1 class="hero-h">Create <span class="hi">video ads</span> that actually <span class="hb">convert</span></h1>
+    <p class="hero-sub">Upload a product photo, paste a URL, or link your website. Creavo AI produces professional video ads with AI presenters, voiceovers, and screen recordings — in minutes.</p>
+    <div class="hbtns">
+      <button class="bo" onclick="go('pricing')">Start for $25/mo</button>
+      <button class="bg" onclick="go('studio')">See the studio →</button>
+    </div>
+  </div>
+  <div class="fg">
+    <div class="fc"><div class="fi">🧑‍💼</div><h3>AI human presenter</h3><p>A lifelike AI avatar delivers your pitch on camera — natural, persuasive, and always on-brand.</p></div>
+    <div class="fc"><div class="fi">🎙️</div><h3>AI voiceover</h3><p>Your product in the spotlight with a crisp AI voice narrating every feature and benefit.</p></div>
+    <div class="fc"><div class="fi">🖥️</div><h3>Website screen recording</h3><p>AI-guided walkthroughs of any site — perfect for SaaS demos, landing pages, and e-commerce.</p></div>
+    <div class="fc"><div class="fi">📸</div><h3>Photo and URL input</h3><p>Drop a product image or paste any link. Creavo extracts context automatically — no setup needed.</p></div>
+    <div class="fc"><div class="fi">⚡</div><h3>Minutes, not days</h3><p>Skip the production crew. Go from brief to finished ad in under five minutes, then iterate freely.</p></div>
+    <div class="fc"><div class="fi">📱</div><h3>Every platform covered</h3><p>Export in the right ratio for Instagram, TikTok, YouTube, Facebook, and display networks instantly.</p></div>
+  </div>
+  <div class="sh" style="margin-top:4rem"><span class="ey">How it works</span><h2>Three steps to your next ad</h2><p>From raw input to ready-to-post video in minutes</p></div>
+  <div class="steps">
+    <div class="step"><div class="sbar"><div class="sf sbo" style="width:33%"></div></div><div class="sn">01</div><h3>Upload or link</h3><p>Provide a product photo, a product URL, or your full website. That's all Creavo needs.</p></div>
+    <div class="step"><div class="sbar"><div class="sf sbb" style="width:66%"></div></div><div class="sn">02</div><h3>Choose your style</h3><p>Pick AI human presenter, AI voiceover, or screen recording. Set tone, duration, and platform.</p></div>
+    <div class="step"><div class="sbar"><div class="sf sbo" style="width:100%"></div></div><div class="sn">03</div><h3>Download and post</h3><p>Your HD ad is ready. Download and publish directly to your channels.</p></div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pg" id="pg-pricing">
+  <div class="sh"><span class="ey">Pricing</span><h2>Simple, honest pricing</h2><p>No hidden fees. Cancel any time. Processed securely via Stripe.</p></div>
+  <div class="pg-grid">
+    <div class="plan">
+      <div class="ptier">Standard</div>
+      <div class="pprice bl"><sup>$</sup>25</div>
+      <div class="pcycle">per month</div>
+      <ul class="pf">
+        <li><span class="ckb">✓</span> 25 video ads per month</li>
+        <li><span class="ckb">✓</span> AI human presenter</li>
+        <li><span class="ckb">✓</span> AI voiceover mode</li>
+        <li><span class="ckb">✓</span> Website screen recording</li>
+        <li><span class="ckb">✓</span> Photo and URL input</li>
+        <li><span class="ckb">✓</span> HD export (1080p)</li>
+        <li><span class="ckb">✓</span> Email support</li>
+      </ul>
+      <button class="pbtn bl" id="btn-std" onclick="subscribe('standard')">Get Standard</button>
+    </div>
+    <div class="plan hot">
+      <div class="ptag">Most popular</div>
+      <div class="ptier">Pro</div>
+      <div class="pprice or"><sup>$</sup>50</div>
+      <div class="pcycle">per month</div>
+      <ul class="pf">
+        <li><span class="cko">✓</span> <strong>100 video ads</strong> per month</li>
+        <li><span class="cko">✓</span> AI human presenter</li>
+        <li><span class="cko">✓</span> AI voiceover mode</li>
+        <li><span class="cko">✓</span> Website screen recording</li>
+        <li><span class="cko">✓</span> Photo and URL input</li>
+        <li><span class="cko">✓</span> 4K export</li>
+        <li><span class="cko">✓</span> Priority queue</li>
+        <li><span class="cko">✓</span> Priority support</li>
+      </ul>
+      <button class="pbtn or" id="btn-pro" onclick="subscribe('pro')">Get Pro</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS (Stripe redirects here) -->
+<div class="pg" id="pg-success">
+  <div class="succ">
+    <div class="sring">✓</div>
+    <h2>You're in.</h2>
+    <p>Your Creavo AI subscription is active and your card has been charged securely through Stripe.</p>
+    <p class="det" id="succ-det">Loading your subscription details…</p>
+    <button class="bo" onclick="go('studio')">Open Studio →</button>
+  </div>
+</div>
+
+<!-- STUDIO -->
+<div class="pg" id="pg-studio">
+  <div class="sw">
+    <div class="stop">
+      <h2>Ad Studio</h2>
+      <div class="qpill"><span class="qdot" id="qdot"></span><span id="qlbl">Loading…</span></div>
+    </div>
+
+    <div class="nosub" id="nosub">
+      <h3>No active subscription</h3>
+      <p>Subscribe to start generating video ads with Creavo AI.</p>
+      <button class="bo" onclick="go('pricing')">View plans</button>
+    </div>
+
+    <span class="sl">Product source</span>
+    <label for="fin">
+      <div class="upzone" id="dz">
+        <div class="upi">🖼️</div>
+        <h3>Drop a product photo here</h3>
+        <p>PNG, JPG, WEBP up to 20 MB</p>
+        <div class="upchosen" id="upc"></div>
+      </div>
+    </label>
+    <input type="file" id="fin" accept="image/*" onchange="onFile(this)"/>
+
+    <div class="orline">or paste a link</div>
+    <div class="urow">
+      <input class="uinp" type="url" id="uin" placeholder="https://yourproduct.com or a product listing URL"/>
+      <button class="bbl" style="padding:.7rem 1.1rem;font-size:.82rem;white-space:nowrap;border-radius:10px" onclick="useUrl()">Use URL</button>
+    </div>
+
+    <span class="sl">Presentation style</span>
+    <div class="ptiles">
+      <div class="ptile sel" id="pt-human" onclick="selP('human')"><div class="ptico">🧑‍💼</div><div class="ptnm">AI Human</div><div class="ptds">Avatar on camera</div></div>
+      <div class="ptile" id="pt-voice" onclick="selP('voice')"><div class="ptico">🎙️</div><div class="ptnm">Voiceover</div><div class="ptds">Product + narration</div></div>
+      <div class="ptile" id="pt-screen" onclick="selP('screen')"><div class="ptico">🖥️</div><div class="ptnm">Screen Rec</div><div class="ptds">AI site walkthrough</div></div>
+    </div>
+
+    <div class="ogrid">
+      <div><span class="sl">Duration</span>
+        <select class="osel" id="odur"><option>15 seconds</option><option>30 seconds</option><option selected>60 seconds</option><option>90 seconds</option></select>
+      </div>
+      <div><span class="sl">Platform format</span>
+        <select class="osel" id="ofmt"><option>Instagram Reel (9:16)</option><option>TikTok (9:16)</option><option>YouTube (16:9)</option><option>Facebook Feed (1:1)</option><option>Display Banner (16:9)</option></select>
+      </div>
+    </div>
+
+    <div class="advtog" onclick="togAdv()">
+      <div><span>Advanced settings</span><br><small>Voice, tone, language, music</small></div>
+      <span id="advarr">▾</span>
+    </div>
+    <div class="advp" id="advp">
+      <div class="advi">
+        <div><span class="sl">Ad tone</span><select class="osel" id="otone"><option>Energetic</option><option selected>Professional</option><option>Friendly</option><option>Luxury</option><option>Humorous</option></select></div>
+        <div><span class="sl">Voice</span><select class="osel" id="ovoice"><option>Emma (US English)</option><option>James (UK English)</option><option>Sofia (Spanish)</option><option>Lucas (French)</option></select></div>
+        <div><span class="sl">Background music</span><select class="osel"><option>Auto-match</option><option>Upbeat corporate</option><option>Cinematic</option><option>None</option></select></div>
+        <div><span class="sl">Language</span><select class="osel"><option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Portuguese</option></select></div>
+      </div>
+    </div>
+
+    <button class="gbtn" id="gbtn" onclick="generate()">✦ Generate video ad</button>
+
+    <div class="pw" id="pw">
+      <div class="pm"><span id="plbl">Analyzing source…</span><span id="ppct">0%</span></div>
+      <div class="pt"><div class="pf2" id="pfill" style="width:0%"></div></div>
+    </div>
+
+    <div class="qs">
+      <h3>Recent ads</h3>
+      <div id="qlist"><p style="color:var(--mu);font-size:.83rem">No ads generated yet. Create your first one above.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT -->
+<div class="pg" id="pg-account">
+  <div class="aw">
+    <div style="margin-bottom:2rem"><span class="ey">Your account</span>
+      <h2 style="font-family:var(--d);font-size:1.55rem;font-weight:800;letter-spacing:-.025em">Account overview</h2>
+    </div>
+    <div class="ac"><h3>Subscription</h3>
+      <div class="ar"><span class="lb">Current plan</span><span class="vl or" id="aplan">—</span></div>
+      <div class="ar"><span class="lb">Status</span><span class="vl on" id="astatus">—</span></div>
+      <div class="ar"><span class="lb">Ads used this period</span><span class="vl" id="aused">—</span></div>
+      <div class="ar"><span class="lb">Period started</span><span class="vl" id="aperiod">—</span></div>
+    </div>
+    <div class="ac"><h3>Account</h3>
+      <div class="ar"><span class="lb">Email</span><span class="vl" id="aemail">—</span></div>
+    </div>
+    <div style="display:flex;gap:.85rem;flex-wrap:wrap;margin-top:1.1rem">
+      <button class="bo" onclick="go('pricing')">Upgrade plan</button>
+      <button class="bg" onclick="openPortal()">Manage billing on Stripe</button>
+    </div>
+  </div>
+</div>
+
+<div id="loader"><div class="spin"></div><p id="ldrmsg">Loading…</p></div>
+<div id="toast"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const B = window.CREAVO.BACKEND_URL;
+let sess = JSON.parse(localStorage.getItem('cv_sess') || 'null');
+let pres = 'human', advOpen = false, generating = false, pollTimer = null;
+
+// ── Nav ────────────────────────────────────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg-' + id).classList.add('on');
+  window.scrollTo(0, 0);
+  if (id === 'studio') refreshStudio();
+  if (id === 'account') refreshAccount();
+}
+
+// ── Boot: check for Stripe redirect ───────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  const p = new URLSearchParams(window.location.search);
+  const sid = p.get('session_id');
+  if (sid) {
+    window.history.replaceState({}, '', window.location.pathname);
+    await handleSuccess(sid);
+  } else {
+    refreshStudio();
+    refreshAccount();
+  }
+});
+
+async function handleSuccess(sid) {
+  ldr('Confirming your subscription…');
+  try {
+    const r = await fetch(`${B}/session/${sid}`);
+    const d = await r.json();
+    if (d.plan && d.status === 'paid') {
+      sess = { email: d.customerEmail, customerId: d.customerId, plan: d.plan, quotaMax: d.plan === 'pro' ? 100 : 25, quotaUsed: 0, subscriptionId: d.subscriptionId };
+      localStorage.setItem('cv_sess', JSON.stringify(sess));
+      document.getElementById('succ-det').textContent = `${d.plan === 'pro' ? 'Pro (100 ads/mo)' : 'Standard (25 ads/mo)'} · ${d.customerEmail}`;
+      go('success');
+    } else { toast('Could not confirm subscription. Contact support.'); go('pricing'); }
+  } catch(e) { toast('Error confirming subscription.'); go('pricing'); }
+  finally { hldr(); }
+}
+
+// ── Stripe Checkout ────────────────────────────────────────────────────────
+async function subscribe(plan) {
+  const btn = document.getElementById(plan === 'pro' ? 'btn-pro' : 'btn-std');
+  btn.disabled = true; btn.textContent = 'Redirecting to Stripe…';
+  ldr('Connecting to Stripe…');
+  try {
+    const r = await fetch(`${B}/create-checkout-session`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ plan }) });
+    const d = await r.json();
+    if (d.url) { window.location.href = d.url; }
+    else throw new Error(d.error || 'No checkout URL.');
+  } catch(e) {
+    toast('Checkout error: ' + e.message);
+    btn.disabled = false; btn.textContent = plan === 'pro' ? 'Get Pro' : 'Get Standard';
+    hldr();
+  }
+}
+
+// ── Billing portal ─────────────────────────────────────────────────────────
+async function openPortal() {
+  if (!sess?.customerId) { toast('No billing account found.'); return; }
+  ldr('Opening Stripe billing portal…');
+  try {
+    const r = await fetch(`${B}/create-portal-session`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ customerId: sess.customerId }) });
+    const d = await r.json();
+    if (d.url) window.location.href = d.url;
+    else throw new Error(d.error);
+  } catch(e) { toast('Portal error: ' + e.message); hldr(); }
+}
+
+// ── Studio ─────────────────────────────────────────────────────────────────
+async function refreshStudio() {
+  const nosub = document.getElementById('nosub');
+  const gbtn = document.getElementById('gbtn');
+  const dot = document.getElementById('qdot');
+
+  if (!sess) {
+    nosub.style.display = 'block'; gbtn.disabled = true;
+    document.getElementById('qlbl').textContent = 'No active subscription';
+    dot.className = 'qdot e'; return;
+  }
+
+  // Fetch live quota from backend
+  try {
+    const r = await fetch(`${B}/me?customerId=${sess.customerId}`);
+    if (r.ok) {
+      const d = await r.json();
+      sess.quotaUsed = d.quotaUsed; sess.quotaMax = d.quotaMax;
+      localStorage.setItem('cv_sess', JSON.stringify(sess));
+    }
+  } catch(e) { /* use cached */ }
+
+  const rem = sess.quotaMax - sess.quotaUsed;
+  nosub.style.display = 'none';
+  document.getElementById('qlbl').textContent = `${rem} of ${sess.quotaMax} ads remaining`;
+  dot.className = rem === 0 ? 'qdot e' : rem <= 5 ? 'qdot w' : 'qdot';
+  gbtn.disabled = rem === 0;
+
+  // Load job history
+  loadJobs();
+}
+
+async function loadJobs() {
+  if (!sess) return;
+  try {
+    const r = await fetch(`${B}/generate/jobs?customerId=${sess.customerId}`);
+    const d = await r.json();
+    renderJobs(d.jobs || []);
+  } catch(e) {}
+}
+
+function renderJobs(jobs) {
+  const list = document.getElementById('qlist');
+  if (!jobs.length) { list.innerHTML = '<p style="color:var(--mu);font-size:.83rem">No ads generated yet. Create your first one above.</p>'; return; }
+  const icons = { human:'🧑‍💼', voice:'🎙️', screen:'🖥️' };
+  const labels = { human:'AI Human', voice:'Voiceover', screen:'Screen Rec' };
+  list.innerHTML = jobs.map(j => `
+    <div class="qi">
+      <div class="qth">${icons[j.presenterType] || '🎬'}</div>
+      <div class="qin">
+        <div class="qnm">${labels[j.presenterType] || 'Ad'} — ${(j.platform||'').split(' ')[0]}</div>
+        <div class="qmt">${j.duration || ''} · ${timeAgo(j.createdAt)}</div>
+      </div>
+      <span class="qst ${j.status==='done'?'sd':j.status==='failed'?'sf2':'sp'}">${j.status}</span>
+      ${j.downloadUrl && j.status==='done' ? `<a class="qdl" href="${j.downloadUrl}" download target="_blank">↓ Download</a>` : `<button class="qdl" disabled style="opacity:.35;cursor:not-allowed">↓ Download</button>`}
+    </div>
+  `).join('');
+}
+
+function timeAgo(iso) {
+  if (!iso) return '';
+  const s = Math.floor((Date.now() - new Date(iso)) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + ' min ago';
+  if (s < 86400) return Math.floor(s/3600) + ' hr ago';
+  return Math.floor(s/86400) + ' days ago';
+}
+
+// ── Account ────────────────────────────────────────────────────────────────
+async function refreshAccount() {
+  if (!sess) {
+    ['aplan','astatus','aused','aperiod','aemail'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  try {
+    const r = await fetch(`${B}/me?customerId=${sess.customerId}`);
+    if (r.ok) {
+      const d = await r.json();
+      document.getElementById('aplan').textContent = d.plan === 'pro' ? 'Pro — $50/mo' : 'Standard — $25/mo';
+      document.getElementById('astatus').textContent = d.active ? 'Active' : 'Inactive';
+      document.getElementById('aused').textContent = `${d.quotaUsed} of ${d.quotaMax}`;
+      document.getElementById('aperiod').textContent = d.periodStart ? new Date(d.periodStart).toLocaleDateString() : '—';
+      document.getElementById('aemail').textContent = d.email || sess.email || '—';
+    }
+  } catch(e) {
+    document.getElementById('aplan').textContent = sess.plan === 'pro' ? 'Pro — $50/mo' : 'Standard — $25/mo';
+  }
+}
+
+// ── File / URL ─────────────────────────────────────────────────────────────
+function onFile(inp) {
+  if (inp.files.length) {
+    const el = document.getElementById('upc');
+    el.textContent = '✓ ' + inp.files[0].name; el.style.display = 'block';
+    document.getElementById('uin').value = '';
+  }
+}
+const dz = document.getElementById('dz');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) { const el = document.getElementById('upc'); el.textContent = '✓ ' + f.name; el.style.display = 'block'; }
+});
+function useUrl() {
+  const u = document.getElementById('uin').value.trim();
+  if (!u.startsWith('http')) { toast('Enter a valid URL starting with https://'); return; }
+  document.getElementById('upc').style.display = 'none';
+  toast('URL accepted — ready to generate');
+}
+
+// ── Presenter ──────────────────────────────────────────────────────────────
+function selP(t) {
+  pres = t;
+  ['human','voice','screen'].forEach(x => document.getElementById('pt-'+x).classList.toggle('sel', x===t));
+}
+
+// ── Advanced ───────────────────────────────────────────────────────────────
+function togAdv() {
+  advOpen = !advOpen;
+  document.getElementById('advp').classList.toggle('open', advOpen);
+  document.getElementById('advarr').textContent = advOpen ? '▴' : '▾';
+}
+
+// ── Generate ───────────────────────────────────────────────────────────────
+const stages = ['Analyzing source…','Extracting product details…','Generating script…','Rendering frames…','Adding presenter…','Mixing audio…','Finalizing export…','Almost done…'];
+
+async function generate() {
+  if (generating || !sess) return;
+  const hasFile = document.getElementById('upc').style.display !== 'none';
+  const hasUrl = document.getElementById('uin').value.trim().length > 0;
+  if (!hasFile && !hasUrl) { toast('Upload a photo or enter a URL first.'); return; }
+
+  generating = true;
+  document.getElementById('gbtn').disabled = true;
+  document.getElementById('pw').style.display = 'block';
+
+  let pct = 0;
+  const fill = document.getElementById('pfill');
+  const plbl = document.getElementById('plbl');
+  const ppct = document.getElementById('ppct');
+
+  const iv = setInterval(() => {
+    pct += Math.random() * 8 + 2; if (pct > 88) pct = 88;
+    fill.style.width = Math.round(pct) + '%';
+    ppct.textContent = Math.round(pct) + '%';
+    plbl.textContent = stages[Math.min(Math.floor(pct/12), stages.length-1)];
+  }, 600);
+
+  try {
+    // Build form data
+    const fd = new FormData();
+    fd.append('customerId', sess.customerId);
+    fd.append('presenterType', pres);
+    fd.append('sourceUrl', document.getElementById('uin').value.trim());
+    fd.append('platform', document.getElementById('ofmt').value);
+    fd.append('duration', document.getElementById('odur').value);
+    fd.append('tone', document.getElementById('otone').value);
+    fd.append('voice', document.getElementById('ovoice').value);
+    const fileInp = document.getElementById('fin');
+    if (fileInp.files.length) fd.append('file', fileInp.files[0]);
+
+    const r = await fetch(`${B}/generate`, { method: 'POST', body: fd });
+    const d = await r.json();
+
+    if (!r.ok) throw new Error(d.error || 'Generation failed');
+
+    clearInterval(iv);
+    plbl.textContent = 'Processing on server…';
+
+    // Poll for completion
+    await pollJob(d.jobId, fill, ppct, plbl);
+
+  } catch(e) {
+    clearInterval(iv);
+    toast('Error: ' + e.message);
+  } finally {
+    generating = false;
+    document.getElementById('gbtn').disabled = false;
+    document.getElementById('pw').style.display = 'none';
+    fill.style.width = '0%';
+    // Refresh quota display
+    refreshStudio();
+  }
+}
+
+async function pollJob(jobId, fill, ppct, plbl) {
+  return new Promise((resolve, reject) => {
+    let attempts = 0;
+    const maxAttempts = 120; // 10 min at 5s intervals
+    pollTimer = setInterval(async () => {
+      attempts++;
+      try {
+        const r = await fetch(`${B}/generate/jobs/${jobId}?customerId=${sess.customerId}`);
+        const d = await r.json();
+
+        if (d.status === 'done') {
+          clearInterval(pollTimer);
+          fill.style.width = '100%'; ppct.textContent = '100%'; plbl.textContent = 'Done!';
+          sess.quotaUsed = (sess.quotaUsed || 0) + 1;
+          localStorage.setItem('cv_sess', JSON.stringify(sess));
+          await loadJobs();
+          toast('✓ Video ad generated and ready to download!');
+          resolve();
+        } else if (d.status === 'failed') {
+          clearInterval(pollTimer);
+          toast('Generation failed: ' + (d.error || 'unknown error'));
+          reject(new Error(d.error));
+        } else if (attempts >= maxAttempts) {
+          clearInterval(pollTimer);
+          toast('Generation timed out. Check your Recent Ads in a few minutes.');
+          resolve();
+        }
+      } catch(e) { /* network hiccup — keep polling */ }
+    }, 5000);
+  });
+}
+
+// ── Loader ─────────────────────────────────────────────────────────────────
+function ldr(msg) { document.getElementById('ldrmsg').textContent = msg; document.getElementById('loader').classList.add('on'); }
+function hldr() { document.getElementById('loader').classList.remove('on'); }
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+let tt;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 3500);
+}
+</script>
+</body>
+</html>
