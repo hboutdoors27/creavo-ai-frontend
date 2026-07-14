@@ -209,6 +209,7 @@ input[type=file]{display:none}
     <a onclick="go('pricing')">Pricing</a>
     <a onclick="go('studio')">Studio</a>
     <a onclick="go('account')">Account</a>
+       <a onclick="manualLogin()" style="color:var(--or2)">Log in</a>
     <button class="ncta" onclick="go('pricing')">Get started</button>
   </div>
 </div>
@@ -460,6 +461,27 @@ async function openPortal() {
     if (d.url) window.location.href = d.url;
     else throw new Error(d.error);
   } catch(e) { toast('Portal error: ' + e.message); hldr(); }
+}
+     function manualLogin() {
+  const email = prompt('Enter your subscription email:');
+  if (!email) return;
+  ldr('Looking up your account…');
+  fetch(`${B}/me-by-email?email=${encodeURIComponent(email)}`)
+    .then(r => r.json())
+    .then(d => {
+      if (d.customerId) {
+        sess = { email: d.email, customerId: d.customerId, plan: d.plan, quotaMax: d.quotaMax, quotaUsed: d.quotaUsed };
+        localStorage.setItem('cv_sess', JSON.stringify(sess));
+        hldr();
+        toast('✓ Logged in! Welcome back.');
+        go('studio');
+        refreshStudio();
+      } else {
+        hldr();
+        toast('Account not found. Please subscribe first.');
+      }
+    })
+    .catch(() => { hldr(); toast('Error looking up account.'); });
 }
 
 // ── Studio ─────────────────────────────────────────────────────────────────
