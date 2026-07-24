@@ -603,7 +603,7 @@ function useUrl() {
 // ── Presenter ──────────────────────────────────────────────────────────────
 function selP(t) {
   pres = t;
-  ['human','voice','screen'].forEach(x => document.getElementById('pt-'+x).classList.toggle('sel', x===t));
+['human','voice','screen','product'].forEach(x => document.getElementById('pt-'+x).classList.toggle('sel', x===t));
 }
 
 // ── Advanced ───────────────────────────────────────────────────────────────
